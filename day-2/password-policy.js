@@ -3,9 +3,10 @@ const data = fs.readFileSync('input.txt', { encoding: 'utf8' });
 const entries = data.trim().split(/\r?\n/);
 
 const checkEntry = (entry) => {
-  const [, min, max, letter, password] = entry.match(/^(\d+)-(\d+) (\w): (\w+)$/);
-  const occurrences = password.split(letter).length - 1;
-  return occurrences >= min && occurrences <= max;
+  const [, first, second, letter, password] = entry.match(/^(\d+)-(\d+) (\w): (\w+)$/);
+  const atFirst = password[first-1] === letter;
+  const atSecond = password[second-1] === letter;
+  return (atFirst !== atSecond); // XOR
 };
 
 const count = entries.filter(checkEntry).length;
