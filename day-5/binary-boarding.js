@@ -8,6 +8,8 @@ const ids = data
   .split(/\r?\n/)
   .map(id => parseInt(id, 2));
 
-ids.sort((a, b) => b - a);
+ids.sort((a, b) => a - b);
 
-console.log(ids[0]);
+const firstWithoutNeighbor = ids.find((v, i, a) => a[i+1] !== a[i]+1);
+
+console.log(firstWithoutNeighbor + 1);
