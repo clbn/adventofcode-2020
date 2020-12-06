@@ -4,9 +4,9 @@ const groups = data.trim().split(/\r?\n\r?\n/);
 
 let sum = 0;
 groups.forEach(group => {
-  const letters = group.replace(/[\r\n]/g, '').split('');
-  const unique = new Set(letters);
-  sum += unique.size;
+  const members = group.split(/\r?\n/).map(letters => letters.split(''));
+  const intersection = members.reduce((inter, letters) => letters.filter(l => inter.includes(l)), members[0]);
+  sum += intersection.length;
 });
 
 console.log(sum);
