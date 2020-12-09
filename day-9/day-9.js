@@ -3,6 +3,8 @@ const data = fs.readFileSync('input.txt', { encoding: 'utf8' });
 const entries = data.trim().split(/\r?\n/).map(i => +i);
 const preambleSize = 25;
 
+// --- Part One ---
+
 const checkEntry = (i) => {
   const currentEntry = entries[i];
   const preamble = new Set(entries.slice(i - preambleSize, i));
@@ -18,11 +20,36 @@ const checkEntry = (i) => {
   return false;
 }
 
+let invalidNumber;
 for (let i = preambleSize; i < entries.length; i++) {
   if (!checkEntry(i)) {
-    console.log(entries[i]);
-    return;
+    invalidNumber = entries[i];
   }
 }
 
-console.log('No invalid number');
+// --- Part Two ---
+
+let start = 0;
+while (entries[start] < invalidNumber) {
+  let i = start;
+  let sum = 0;
+  const contiguous = [];
+
+  while (sum < invalidNumber) {
+    sum += entries[i];
+    contiguous.push(entries[i]);
+    i++;
+  }
+
+  if (sum === invalidNumber) {
+    contiguous.sort((a, b) => a - b);
+    const min = contiguous[0];
+    const max = contiguous[contiguous.length - 1];
+    console.log(min + max);
+    return;
+  }
+
+  start++;
+}
+
+console.log('No weakness found');
