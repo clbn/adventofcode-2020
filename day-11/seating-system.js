@@ -9,8 +9,10 @@ const occupiedAround = (map, y, x) => {
   for (let a = -1; a <= 1; a++) {
     for (let b = -1; b <= 1; b++) {
       if (!(a === 0 && b === 0)) {
-        if (map[y+a] && map[y+a][x+b] === '#') {
-          occ++;
+        for (let d = 1;; d++) {
+          if (!map[y+a*d] || !map[y+a*d][x+b*d]) { break; }
+          if (map[y+a*d][x+b*d] === 'L') { break; }
+          if (map[y+a*d][x+b*d] === '#') { occ++; break; }
         }
       }
     }
@@ -21,7 +23,7 @@ const occupiedAround = (map, y, x) => {
 const nextState = (map, y, x) => {
   if (map[y][x] === 'L' && occupiedAround(map, y, x) === 0) {
     return '#';
-  } else if (map[y][x] === '#' && occupiedAround(map, y, x) >= 4) {
+  } else if (map[y][x] === '#' && occupiedAround(map, y, x) >= 5) {
     return 'L';
   }
   return map[y][x];
