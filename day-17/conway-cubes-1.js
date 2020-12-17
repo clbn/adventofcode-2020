@@ -23,17 +23,12 @@ const expandMap = (map) => {
 
 const occupiedAround = (map, x, y, z) => {
   let occ = 0;
-  for (let a = -1; a <= 1; a++) {
-    for (let b = -1; b <= 1; b++) {
-      for (let c = -1; c <= 1; c++) {
-        if (!(a === 0 && b === 0 && c === 0)) {
-          if (map[z+c] && map[z+c][y+b] && map[z+c][y+b][x+a]) {
+  for (let a = -1; a <= 1; a++)
+    for (let b = -1; b <= 1; b++)
+      for (let c = -1; c <= 1; c++)
+        if (a || b || c)
+          if (map[z+c]?.[y+b]?.[x+a])
             occ++;
-          }
-        }
-      }
-    }
-  }
   return occ;
 };
 
