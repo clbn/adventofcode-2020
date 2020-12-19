@@ -7,6 +7,8 @@ rawRules.split(/\r?\n/).forEach(r => {
   const [, number, format] = r.match(/^(\d+): (.+)$/);
   rules[+number] = format;
 });
+rules[8] = '( 42 ) +';
+rules[11] = '( 42 ( 42 ( 42 ( 42 31 ) ? 31 ) ? 31 ) ? 31 )';
 
 const messages = rawMessages.split(/\r?\n/);
 
