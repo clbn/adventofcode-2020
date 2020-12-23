@@ -1,11 +1,18 @@
 const input = [6, 2, 4, 3, 9, 7, 1, 5, 8];
-const moves = 100;
+const size = 10 ** 6;
+const moves = 10 ** 7;
+
+for (let i = 10; i <= size; i++) {
+  input.push(i);
+}
 
 let cup;
 let first;
 let previous = null;
+let cups = new Array(size);
 input.forEach(label => {
   cup = { label, next: null };
+  cups[label] = cup;
   if (!previous) {
     first = cup;
   } else {
@@ -23,31 +30,25 @@ for (let i = 0; i < moves; i++) {
   cup.next = cup.next.next.next.next;
 
   // Find destination cup
-  const smallerCups = [];
-  const biggerCups = [];
-  for (let j = 0; j < input.length - 4; j++) {
-    cup = cup.next;
-    if (cup.label < currentLabel) {
-      smallerCups.push(cup.label);
-    } else {
-      biggerCups.push(cup.label);
+  let destinationLabel = currentLabel;
+  const currentAndThree = [currentLabel, nextThreeCups.label, nextThreeCups.next.label, nextThreeCups.next.next.label];
+  while (currentAndThree.includes(destinationLabel)) {
+    destinationLabel--;
+    if (destinationLabel < 1) {
+      destinationLabel = size;
     }
   }
-  const destinationLabel = smallerCups.length ? Math.max(...smallerCups) : Math.max(...biggerCups);
 
   // Put three cups down
-  do { cup = cup.next } while (cup.label !== destinationLabel);
+  cup = cups[destinationLabel];
   nextThreeCups.next.next.next = cup.next;
   cup.next = nextThreeCups;
 
   // Move to a new current cup
-  do { cup = cup.next } while (cup.label !== currentLabel);
-  cup = cup.next;
+  cup = cups[currentLabel].next;
 }
 
-let answer = '';
-do { cup = cup.next } while (cup.label !== 1);
-cup = cup.next;
-do { answer += cup.label; cup = cup.next; } while (cup.label !== 1);
+const cup1 = cups[1].next;
+const cup2 = cup1.next;
 
-console.log(answer);
+console.log(cup1.label * cup2.label)
